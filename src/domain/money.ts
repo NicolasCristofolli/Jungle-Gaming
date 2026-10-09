@@ -1,7 +1,7 @@
 import Decimal from "decimal.js";
 import { CurrencyMismatchError, InvalidMoneyError } from "./errors";
 
-// O formato do dinheiro quando ele chga de fora
+// O formato do dinheiro quando ele chega de fora
 export interface MoneyProps {
   amount: string;
   currency: string;
@@ -26,6 +26,9 @@ export class Money {
     return new Money(new Decimal(props.amount), props.currency);
   }
 
+  static zero(currency: string): Money {
+    return Money.from({ amount: "0.00", currency });
+  }
   toString(): string {
     return this.value.toFixed(2);
   }
@@ -65,15 +68,11 @@ export class Money {
   }
 
   equals(other: Money): boolean {
-    return this.currency == other.currency && this.value.equals(other.value);
+    return this.currency === other.currency && this.value.equals(other.value);
   }
 
   toJSON(): MoneyProps {
     return { amount: this.toString(), currency: this.currency };
-  }
-
-  static zero(currency: string): Money {
-    return Money.from({ amount: "0.00", currency });
   }
 
   private assertSameCurrency(other: Money): void {
