@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.1148.0",
+    "@mikro-orm/core": "7",
+    "@mikro-orm/migrations": "7",
+    "@mikro-orm/nestjs": "7",
+    "@mikro-orm/postgresql": "7",
+    "@nestjs/common": "^12.1.2",
+    "@nestjs/core": "^12.1.2",
+    "@nestjs/platform-express": "^12.1.2",
+    "decimal.js": "^10.6.0",
+    "pino": "^10.4.0",
+    "prom-client": "^15.1.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "zod": "^4.6.5"
+  },
+  "name": "jungle-gaming",
+  "module": "src/main.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "^1.4.2"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  }
+}

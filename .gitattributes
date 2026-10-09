@@ -1,0 +1,2 @@
+# scripts shell precisam de LF, senão quebram dentro do container Linux
+*.sh text eol=lf

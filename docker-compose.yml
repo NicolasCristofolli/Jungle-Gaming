@@ -1,0 +1,58 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: wagering
+      POSTGRES_PASSWORD: wagering
+      POSTGRES_DB: wagering
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # cria o banco wagering_test na primeira subida (usado pelos testes)
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wagering -d wagering"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  localstack:
+    # Versão fixada: a partir de 2026.03 as imagens novas exigem auth token.
+    # 4.12 é a última Community sem token. Ver ARCHITECTURE.md.
+    image: localstack/localstack:4.12
+    environment:
+      SERVICES: sqs
+      AWS_DEFAULT_REGION: us-east-1
+    ports:
+      - "4566:4566"
+    volumes:
+      # scripts em ready.d rodam quando a LocalStack termina de subir
+      - ./docker/localstack/init-sqs.sh:/etc/localstack/init/ready.d/init-sqs.sh:ro
+    healthcheck:
+      # só fica "healthy" depois que a fila principal existe
+      test: ["CMD-SHELL", "awslocal sqs get-queue-url --queue-name wager-transactions.fifo"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+
+  app:
+    build: .
+    profiles: ["app"]   # durante o dev: rode o app com `bun run`; para tudo em container: --profile app
+    environment:
+      DATABASE_URL: postgres://wagering:wagering@postgres:5432/wagering
+      AWS_REGION: us-east-1
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      SQS_ENDPOINT: http://localstack:4566
+      PORT: "3000"
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      localstack:
+        condition: service_healthy
+
+volumes:
+  pgdata:
