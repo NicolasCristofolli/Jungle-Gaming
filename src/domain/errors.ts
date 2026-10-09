@@ -22,3 +22,9 @@ export class CurrencyMismatchError extends DomainError {
     super("CURRENCY_MISMATCH", message);
   }
 }
+
+export class InvalidLedgerEntryError extends DomainError {
+  constructor(message: string) {
+    super('INVALID_LEDGER_ENTRY', message);
+  }
+}
