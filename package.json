@@ -29,6 +29,8 @@
     "start": "bun run src/main.ts",
     "test": "bun test",
     "migrate": "bun run scripts/migrate.ts",
-    "migrate:down": "bun run scripts/migrate.ts down"
+    "migrate:down": "bun run scripts/migrate.ts down",
+    "test:unit": "bun test test/unit",
+   "test:concurrency": "bun test test/concurrency"
   },
 }
