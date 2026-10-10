@@ -10,7 +10,6 @@ import {
   InvalidTransactionError,
   InvalidTransactionStateError,
 } from "../../src/domain/errors";
-import { createContextId } from "@nestjs/core";
 
 const base = (kind: WagerTransactionKind, ref?: string) => ({
   id: "tx-1",

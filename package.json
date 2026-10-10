@@ -24,5 +24,11 @@
   },
   "peerDependencies": {
     "typescript": "^7"
-  }
+  },
+  "scripts": {
+    "start": "bun run src/main.ts",
+    "test": "bun test",
+    "migrate": "bun run scripts/migrate.ts",
+    "migrate:down": "bun run scripts/migrate.ts down"
+  },
 }
