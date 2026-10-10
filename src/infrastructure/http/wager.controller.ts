@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Headers, Post, Res } from '@nestjs/common';
 import type { Response } from 'express';
-import { z } from 'zod';
+import { number, z } from 'zod';
 import {
   SubmitWagerTransactionUseCase,
   type SubmitWagerResult,
@@ -44,8 +44,15 @@ export class WagerController {
 
 // VOCÊ FAZ: escolhe o status HTTP de acordo com o resultado (tabela acima)
 function statusFor(result: SubmitWagerResult): number {
-  // TODO 1: se result.idempotentReplay for true → 200
-  // TODO 2: se result.status for WagerTransactionStatus.Rejected → 422
-  // TODO 3: se result.status for WagerTransactionStatus.PendingReference → 202
-  // TODO 4: senão → 201
+    if (result.idempotentReplay) {
+        return 200
+    }
+    if (result.status === WagerTransactionStatus.Rejected) {
+        return 422
+    }
+    if (result.status === WagerTransactionStatus.PendingReference) {
+        return 202
+    }
+    return 201
+
 }
