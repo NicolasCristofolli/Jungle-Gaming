@@ -29,8 +29,23 @@ export class InvalidLedgerEntryError extends DomainError {
   }
 }
 
+// Erro de saldo insuficiente
 export class InsufficientFundsError extends DomainError {
   constructor(message: string) {
     super("INSUFFICIENT_FUNDS", message);
+  }
+}
+
+// tentou mudar uma transação que já está num estado final
+export class InvalidTransactionStateError extends DomainError {
+  constructor(message: string) {
+    super("INVALID_TRANSACTION_STATE", message);
+  }
+}
+
+// dados da transação inválidos (ex.: REFUND sem referência)
+export class InvalidTransactionError extends DomainError {
+  constructor(message: string) {
+    super("INVALID_TRANSACTION", message);
   }
 }
